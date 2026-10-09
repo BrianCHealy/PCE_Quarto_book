@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>PCE Paired Dichotomous Data for R – PCE</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">PCE</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_SummaryStats_Quarto.qmd"> 
+<span class="menu-text">P2_SummaryStats</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Graphics_Quarto.html"> 
+<span class="menu-text">P2_Graphics</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Ttest_Quarto.html"> 
+<span class="menu-text">P3_Ttest</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Prop_Quarto.html"> 
+<span class="menu-text">P4_Proportions</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Survival_Quarto.html"> 
+<span class="menu-text">P4_Survival</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Power_Quarto.html"> 
+<span class="menu-text">P5_Power</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_MH_Quarto.html"> 
+<span class="menu-text">P6_Mantel_Haenszel</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Corr_Quarto.html"> 
+<span class="menu-text">P7_Correlation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Simple_Quarto.html"> 
+<span class="menu-text">P7_Simple</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Logistic_Quarto.html"> 
+<span class="menu-text">P8_Logistic</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Interaction_Quarto.html"> 
+<span class="menu-text">P8_Interaction</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Cox_Quarto.html"> 
+<span class="menu-text">P9_Cox</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_OnewayANOVA_Quarto.html"> 
+<span class="menu-text">P9_Oneway_ANOVA</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_Pairwise_Quarto.html"> 
+<span class="menu-text">P9_Pairwise</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./PCE_PairedCont_Quarto.html"> 
+<span class="menu-text">P10_Paired_Continuous</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./PCE_PairedDich_Quarto.html" aria-current="page"> 
+<span class="menu-text">P10_Paired_Dichotomous</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#mcnemars-test-and-kappa-statistics" id="toc-mcnemars-test-and-kappa-statistics" class="nav-link active" data-scroll-target="#mcnemars-test-and-kappa-statistics">McNemar’s test and kappa statistics</a></li>
+  <li><a href="#program-in-clinical-effectiveness" id="toc-program-in-clinical-effectiveness" class="nav-link" data-scroll-target="#program-in-clinical-effectiveness">Program in Clinical Effectiveness</a>
+  <ul class="collapse">
+  <li><a href="#mcnemars-test" id="toc-mcnemars-test" class="nav-link" data-scroll-target="#mcnemars-test">McNemar’s test</a></li>
+  <li><a href="#relationship-between-mcnemars-test-and-one-sample-test-of-proportion" id="toc-relationship-between-mcnemars-test-and-one-sample-test-of-proportion" class="nav-link" data-scroll-target="#relationship-between-mcnemars-test-and-one-sample-test-of-proportion">Relationship between McNemar’s test and one sample test of proportion</a></li>
+  <li><a href="#kappa-statistic" id="toc-kappa-statistic" class="nav-link" data-scroll-target="#kappa-statistic">Kappa statistic</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">PCE Paired Dichotomous Data for R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="mcnemars-test-and-kappa-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="mcnemars-test-and-kappa-statistics">McNemar’s test and kappa statistics</h2>
+</section>
+<section id="program-in-clinical-effectiveness" class="level2">
+<h2 class="anchored" data-anchor-id="program-in-clinical-effectiveness">Program in Clinical Effectiveness</h2>
+<p>Goal: This practicum will show how to complete McNemar’s test and kappa statistics in R.</p>
+<section id="mcnemars-test" class="level3">
+<h3 class="anchored" data-anchor-id="mcnemars-test">McNemar’s test</h3>
+<p>Please open the McNemar_test.csv dataset from the course website and call it <em>mcnem</em>. This dataset provides the data described in the lecture. In particular, the dataset includes the relapse status at year 1 and year 5 for each of the 178 subjects. This dataset is in wide format because the repeated measures on the patient are listed in separate columns. In this format, each row contains all information about a patient. The wide format is required for a McNemar’s test in R.</p>
+<p>The alternative format is the long format in which each observation has a separate row, and each patient has multiple rows. The long format will be required to use the Mantel-Haenszel approach for paired data. There is a link between McNemar’s test and the Mantel-Haenszel approach that you will learn about in future courses.</p>
+<p>In order to see the number and proportion of subjects who had a relapse at each year, we can use the tabulate command that we have learned in previous practicums.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mcnem<span class="sc">$</span>year1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+133  45 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(mcnem<span class="sc">$</span>year1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+       0        1 
+0.747191 0.252809 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mcnem<span class="sc">$</span>year5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+  0   1 
+142  36 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(mcnem<span class="sc">$</span>year5))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+        0         1 
+0.7977528 0.2022472 </code></pre>
+</div>
+</div>
+<p>As we can see, 45 subjects had a relapse in year 1, which corresponds to 0.253 of the subjects. A smaller proportion of subjects had a relapse in year 5. In particular, only 36 subjects had a relapse in year 5, which corresponds to 0.202. To see the discordant and concordant pairs, we can use the table command.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(mcnem<span class="sc">$</span>year1, mcnem<span class="sc">$</span>year5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+      0   1
+  0 123  10
+  1  19  26</code></pre>
+</div>
+</div>
+<p>On this table, the presence/absence of a relapse at year 1 is the row variable, and the presence/absence of a relapse at year 5 is the column variable. Therefore, the number of subjects who had a relapse at year 5 and no relapse at year 1 is 10, and the number of subjects who had a relapse at year 1 and no relapse at year 5 is 19.</p>
+<p>Despite the difference in the proportion, we would like to formally compare the groups. Since we observed the same subjects at the two time points, we must account for the pairing in the analysis using McNemar’s test. One approach for fitting McNemar’s test in R is to use the mcnemar.test command and output are shown here.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcnemar.test</span>(mcnem<span class="sc">$</span>year1, mcnem<span class="sc">$</span>year5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    McNemar's Chi-squared test with continuity correction
+
+data:  mcnem$year1 and mcnem$year5
+McNemar's chi-squared = 2.2069, df = 1, p-value = 0.1374</code></pre>
+</div>
+</div>
+<p>Note that the output looks similar to the output from the <em>chisq.test</em> command that we have seen in previous practicums. As with the <em>chisq.test</em> command, the default is to include a continuity correction. The resulting p-value is slightly different than the p-value the lecture and Stata because of the continuity correction, but the conclusion is similar.</p>
+<p>If we would like to match the results from the lecture and Stata, we can add correct=F to the command.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcnemar.test</span>(mcnem<span class="sc">$</span>year1,mcnem<span class="sc">$</span>year5,<span class="at">correct=</span>F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    McNemar's Chi-squared test
+
+data:  mcnem$year1 and mcnem$year5
+McNemar's chi-squared = 2.7931, df = 1, p-value = 0.09467</code></pre>
+</div>
+</div>
+<p>In order to calculate the exact p-value for McNemar’s test and the confidence interval for the odds ratio, we can use the <em>mcnemar.exact</em> command from the <em>exact2x2</em> library. In R, there are many additional commands that we can use for specialized analyses that require loading additional libraries. You need to install the <em>exact2x2</em> first (<em>install.packages(exact2x2)</em>), and then we can load this library.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(exact2x2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: exactci</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ssanv</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: testthat</code></pre>
+</div>
+</div>
+<p>Now, we can use the mcnemar.exact command in a similar way to how we used the mcnemar.test command, but we get different statistics:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcnemar.exact</span>(mcnem<span class="sc">$</span>year1,mcnem<span class="sc">$</span>year5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Exact McNemar test (with central confidence intervals)
+
+data:  mcnem$year1 and mcnem$year5
+b = 10, c = 19, p-value = 0.136
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.2185962 1.1896487
+sample estimates:
+odds ratio 
+ 0.5263158 </code></pre>
+</div>
+</div>
+<p>The two-sided p-value for the exact McNemar’s test of a difference between the years is shown 0.136. In addition, the estimated odds ratio (0.53) and 95% confidence interval for the odds ratio (0.22, 1.19) are provided.</p>
+<p>Given this information, we can complete our McNemar’s test.</p>
+<ol type="1">
+<li>State estimand of interest and null hypothesis: Estimand of interest: Association between year and presence of relapse; <span class="math inline">\(H_0: OR=1\)</span></li>
+<li>State type of data: Paired dichotomous data</li>
+<li>Determine appropriate statistical test: McNemar’s test</li>
+<li>State summary statistics if possible: <span class="math inline">\(\hat{OR}=\)</span> 0.53</li>
+<li>Calculate 95% confidence interval and p-value (stat package): 0.22, 1.19; <span class="math inline">\(p=\)</span> 0.136</li>
+<li>The estimated OR comparing year 5 to year 1 is 0.53 with a range of plausible values from 0.22 to 1.19. Note that an OR of 1 indicating no difference between the years is included in the confidence interval, but the interval is quite wide given our limited sample size.</li>
+</ol>
+<p>Note that our 95% confidence interval for the odds ratio includes 1, which agrees with the fact that the p-value is greater than 0.05.</p>
+</section>
+<section id="relationship-between-mcnemars-test-and-one-sample-test-of-proportion" class="level3">
+<h3 class="anchored" data-anchor-id="relationship-between-mcnemars-test-and-one-sample-test-of-proportion">Relationship between McNemar’s test and one sample test of proportion</h3>
+<p>The exact McNemar’s test is equivalent to an exact one sample test of proportions. If there was no difference between the two years, we would expect that 50% of the discordant pairs would be in cell f and 50% of the discordant pairs would be in cell g. In this example, there are 10 subjects in cell f and 19 subjects in cell g for a total of 29 discordant pairs. To determine if this distribution of discordant pairs is unlikely under the null, we can use the <em>binom.test</em> command. In this command, we specify the number of subjects in cell f, the total number of discordant pairs, and the probability under the null (0.5):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="at">x=</span><span class="dv">10</span>,<span class="at">n=</span><span class="dv">29</span>,<span class="at">p=</span><span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Exact binomial test
+
+data:  10 and 29
+number of successes = 10, number of trials = 29, p-value = 0.136
+alternative hypothesis: true probability of success is not equal to 0.5
+95 percent confidence interval:
+ 0.1793836 0.5433057
+sample estimates:
+probability of success 
+             0.3448276 </code></pre>
+</div>
+</div>
+<p>The two sided p-value from this output matches the exact p-value from McNemar’s test.</p>
+<p>Note that we would have obtained the same p-value if we would have used the number of subjects in cell g for the command.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="at">x=</span><span class="dv">19</span>,<span class="at">n=</span><span class="dv">29</span>,<span class="at">p=</span><span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Exact binomial test
+
+data:  19 and 29
+number of successes = 19, number of trials = 29, p-value = 0.136
+alternative hypothesis: true probability of success is not equal to 0.5
+95 percent confidence interval:
+ 0.4566943 0.8206164
+sample estimates:
+probability of success 
+             0.6551724 </code></pre>
+</div>
+</div>
+</section>
+<section id="kappa-statistic" class="level3">
+<h3 class="anchored" data-anchor-id="kappa-statistic">Kappa statistic</h3>
+<p>For the second part of the practicum, please open the kappa_statistic dataset and call it <em>kappa_data</em>. This dataset has three variables: subject (patient identifier), rater1 (=1 for yes and =0 for no from rater 1), and rater 2 (=1 for yes and =0 for no from rater 2). In order to calculate the kappa statistic, we need to load the <em>irr</em> library. If you have not previously installed this library, please install the <em>irr</em> library using <em>install.packages(irr)</em>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(irr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'irr' was built under R version 4.5.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lpSolve</code></pre>
+</div>
+</div>
+<p>To observe the agreement between the two raters, we can create a 2x2 table:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(kappa_data<span class="sc">$</span>Rater1, kappa_data<span class="sc">$</span>Rater2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+     0  1
+  0 25 10
+  1  5 15</code></pre>
+</div>
+</div>
+<p>We can see in this output that 25 subjects were rated as 0 by both raters, 15 subjects were rated at 1 by both raters, 10 subjects were rated as a 0 by Rater 1 and a 1 by Rater 2, and 5 subjects were rated as a 1 by Rater 1 and a 0 by Rater 2. To calculate the kappa statistic, we can use the <em>kappa2</em> command.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kappa2</span>(<span class="fu">data.frame</span>(kappa_data<span class="sc">$</span>Rater1, kappa_data<span class="sc">$</span>Rater2))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Cohen's Kappa for 2 Raters (Weights: unweighted)
+
+ Subjects = 55 
+   Raters = 2 
+    Kappa = 0.441 
+
+        z = 3.33 
+  p-value = 0.000879 </code></pre>
+</div>
+</div>
+<p>From the table above, we can see that the observed agreement (30/55=0.545). Using this value and the expected agreement that we calculated in the lecture, we can calculate kappa as 0.441. Finally, a p-value for the test of whether the kappa statistic is equal to 0 is provided.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

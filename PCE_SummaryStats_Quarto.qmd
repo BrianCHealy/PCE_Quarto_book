@@ -1,0 +1,154 @@
+---
+title: "PCE Practicum Summary Statistics for R"
+format: html
+editor: visual
+---
+
+## Data description and graphics
+
+## Program in Clinical Effectiveness
+
+Goal: This practicum will go over how to calculate summary statistics and how to make simple graphics in R. 
+
+### Summary statistics
+
+In lecture, we investigated summary statistics and basic graphics.  In this practicum, we will learn how to calculate summary statistics and create graphics in R.
+
+Please read the digitalis_dataset_23.csv dataset into R by following the steps from the previous document and call the dataset *dig* for the remaining code below. R is case sensitive. This means that you should check if the variable names are uppercase or lowercase. In the remainder of this practicum, we will use lowercase for the variable names, but you can adjust as needed.
+
+On Canvas, we also provide a PDF describing the Digitalis trial, which was a multicenter trial with more than 300 centers in the US and Canada.  This trial aimed to estimate the efficacy and safety of Digoxin in treating patients with congestive heart failure.  A teaching version of the dataset has been made available by the NHBLI, and information related to the dataset is also provided on Canvas.  Please note that this dataset is only a subset of the full dataset available from NHBLI.
+
+An important first step in many studies is to calculate summary statistics related to baseline characteristics in the sample.  To calculate the summary statistics for a continuous variable, the R command summary can be used.  Let’s investigate baseline age using the *summary*. For this command, we write the command first (*summary*).  Then, inside the parentheses we list the dataset name before the dollar sign (*dig*) and the variable name within the dataset after the dollar sign (*age*). The following output is produced:
+
+
+```{r}
+#| label: Reading in dataset
+#| echo: false
+dig<-read.csv("C:\\Users\\bhealy\\Partners HealthCare Dropbox\\Brian Healy\\BST_208_Clinical effectiveness\\BST206\\Healy_slides\\Session_4_PracSumStats\\digitalis_dataset_23.csv")
+```
+
+```{r}
+#| label: Summary
+
+summary(dig$age)
+```
+
+```{r}
+#| label: Stats for paragraphs
+#| echo: false
+agest<-summary(dig$age)
+meanage<-round(agest[4],1)
+minage<-round(agest[1])
+medianage<-round(agest[3])
+maxage<-round(agest[6])
+
+sextab<-table(dig$sex)
+male<-sextab[1]
+female<-sextab[2]
+
+sexprtab<-prop.table(table(dig$sex))
+malep<-sexprtab[1]
+femalep<-sexprtab[2]
+
+```
+
+In this output, R provides the minimum (`r minage`), median (`r medianage`), mean (`r meanage`), and maximum (`r maxage`).
+
+We can also calculate additional summary statistics using separate commands.  Note that for these commands, we would need to add the na.rm=T option if there were missing observations in the dataset.  Here are the commands and output for calculating the mean, standard deviation, and variance.
+
+```{r}
+#| label: Summary stats 2
+mean(dig$age)
+sd(dig$age)
+var(dig$age)
+```
+
+If we would like to calculate the median, minimum and maximum, we can use the following commands:
+
+```{r}
+#| label: Summary stats 3
+median(dig$age)
+min(dig$age)
+max(dig$age)
+```
+
+If we would like to calculate other percentiles, we can use the *quantile* command with the *probs* option to indicate the percentile we are interested in.  As an example, this command will calculate the 25th and 75th percentiles. 
+
+```{r}
+#| label: Summary stats 4
+quantile(dig$age, probs=c(0.25, 0.75))
+```
+
+To calculate the skewness and kurtosis, we need to install a separate library.  In R, there are libraries that we can install with additional commands.
+
+```{r}
+#| label: Summary stats 5
+library(e1071)
+skewness(dig$age)
+kurtosis(dig$age)
+```
+
+### Graphics
+
+R has the ability to create many graphics.  Although there are advanced R packages to create plots, we will focus on basic R commands at this early stage.  When we make plots in RStudio, the resulting plots are shown in the lower right-hand window.  We can copy and paste the plots or save the plots using the Export button above the plot.  
+
+For the histogram of age, we use the following command.
+
+```{r}
+#| label: Graph 1
+hist(dig$age, xlab="Age", main="Histogram of Age")
+``` 
+
+For this command, *age* is the variable name for the variable of interest.  The other two options tell R the title of the x-axis and the title of the graph.
+
+For the box plot of age, we use the following command:
+
+```{r}
+#| label: Graph 2
+boxplot(dig$age, ylab="Age", main="Box plot of Age")
+```
+
+### Proportion
+
+In the dataset, the variable “sex” is a dichotomous variable, so the summary statistic of interest is the proportion of males and females. As described above, sex=1 for male and sex=2 for the female. To calculate the frequency and proportion of males and females in the dataset, we can use the table and prop.table commands. 
+
+```{r}
+#| label: Proportion 1
+table(dig$sex)
+```
+
+This command provides the number of males (`r male`) and females (`r female`).
+
+
+```{r}
+#| label: Proportion 1 v2
+prop.table(table(dig$sex))
+```
+
+This command provides the percent of males (`r malep`) and females (`r femalep`).
+
+
+### Group specific summary statistics
+
+In addition to the summary statistics in the entire sample, we would often like to calculate the summary statistics in each sex separately.  In R, there are a number of ways to calculate the group specific summary statistics. One approach to calculate the age in each group is to subset the data and calculate the summary statistics in each subset.  To subset the data, we can choose the rows from the dataset with *sex=1*. Then, we can calculate the summary statistics of the age in this subset.  
+
+For this command, note that we have the same information as the original summary command from above. In particular, we are applying the summary command (*summary*) to the variable age from the dataset dig.  The main change is that we have added *[dig\$sex==1,]* .  When we use the *[]*, we are trying to look at a subset of the data. When we have a data frame, there are both rows and columns.  The rows that we would like to focus on are identified before the comma, and the columns after the comma. By writing *dig\$sex==1* before the comma, we indicate that we would like the rows in which sex is equal to 1.  Since we have nothing after the comma, we indicate that we would like all the columns. The result is that *dig[dig\$sex==1,]* finds the rows in the *dig* dataset in which sex is equal to 1, and then the rest of the command find the summary statistics for the variable *age*.  We can use the same concept for sex equal to 2.
+
+```{r}
+#| label: Sex specific age
+summary(dig[dig$sex==1,]$age)
+
+summary(dig[dig$sex==2,]$age)
+```
+
+An alternative approach is to use the *by* command. In this command, we state the variable we are interested in (*dig\$age*), the variable that identifies the groups (*dig\$sex*), and the function we would like to apply to the variable (*summary*).
+
+```{r}
+#| label: By command
+
+by(dig$age, dig$sex, summary)
+
+```
+
+
+

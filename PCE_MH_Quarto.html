@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>PCE Practicum MH for R – PCE</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">PCE</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-practicum-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Practicum 1</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-practicum-1">    
+        <li>
+    <a class="dropdown-item" href="./PCE_Summarystats_Quarto.html">
+ <span class="dropdown-text">Summary Statistics</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="./PCE_Graphics_Quarto.html">
+ <span class="dropdown-text">Graphics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#analysis-of-dichotomous-outcomes-stratified-analysis-and-the-mantel-haenszel-approach" id="toc-analysis-of-dichotomous-outcomes-stratified-analysis-and-the-mantel-haenszel-approach" class="nav-link active" data-scroll-target="#analysis-of-dichotomous-outcomes-stratified-analysis-and-the-mantel-haenszel-approach">Analysis of dichotomous outcomes: Stratified analysis and the Mantel-Haenszel approach</a>
+  <ul class="collapse">
+  <li><a href="#crude-analysis" id="toc-crude-analysis" class="nav-link" data-scroll-target="#crude-analysis">Crude analysis</a></li>
+  <li><a href="#stratified-analysis" id="toc-stratified-analysis" class="nav-link" data-scroll-target="#stratified-analysis">Stratified analysis</a></li>
+  <li><a href="#mantel-haenszel-approach" id="toc-mantel-haenszel-approach" class="nav-link" data-scroll-target="#mantel-haenszel-approach">Mantel-Haenszel approach</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">PCE Practicum MH for R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="analysis-of-dichotomous-outcomes-stratified-analysis-and-the-mantel-haenszel-approach" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-of-dichotomous-outcomes-stratified-analysis-and-the-mantel-haenszel-approach">Analysis of dichotomous outcomes: Stratified analysis and the Mantel-Haenszel approach</h2>
+<p>Goal: This practicum will go over how to complete a stratified analysis and complete a Mantel-Haenszel test in R.</p>
+<section id="crude-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="crude-analysis">Crude analysis</h3>
+<p>Please load the MHanalysis.dta dataset into R. We are going to investigate the relationship between the presence or absence of a SNP and the presence or absence of disease progression as we did in the previous practicum for 2x2 tables. In this practicum, we will extend the ideas to stratify on a third variable and perform the Mantel-Haenszel approach.</p>
+<p>As a first step in most analyses, we perform a crude analysis, which estimates the association between the predictor (SNP+ vs.&nbsp;SNP-) and the outcome (Prog+ vs.&nbsp;Prog-) without accounting for other variables. This is the same as the 2x2 table analysis from the previous practicum. There are several commands that we can use for this in R, but we will use the <em>riskratio</em> and <em>oddsratio</em> commands from the <em>epitools</em> library since it provides multiple summary statistics in a single command:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(epitools)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">riskratio</span>(<span class="at">x=</span>MHanalysis<span class="sc">$</span>snp,<span class="at">y=</span>MHanalysis<span class="sc">$</span>prog)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor   0  1 Total
+    0     103 13   116
+    1      62 12    74
+    Total 165 25   190
+
+$measure
+         risk ratio with 95% C.I.
+Predictor estimate     lower    upper
+        0 1.000000        NA       NA
+        1 1.446985 0.6984203 2.997861
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.3303927    0.3802594  0.3192177
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oddsratio</span>(<span class="at">x=</span>MHanalysis<span class="sc">$</span>snp,<span class="at">y=</span>MHanalysis<span class="sc">$</span>prog, <span class="at">method=</span><span class="st">"wald"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor   0  1 Total
+    0     103 13   116
+    1      62 12    74
+    Total 165 25   190
+
+$measure
+         odds ratio with 95% C.I.
+Predictor estimate     lower    upper
+        0 1.000000        NA       NA
+        1 1.533499 0.6583953 3.571743
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.3303927    0.3802594  0.3192177
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+</div>
+<p>From these analyses, we get two estimates of the association with the associated 95% confidence interval (risk ratio: 1.45; odds ratio: 1.53) and the chi-squared test p-value (0.319). Both 95% confidence intervals include the null value (risk ratio: 0.7, 3; odds ratio: 0.66, 3.57), and the p-value is larger than 0.05. Note that Fisher’s exact test p-value is also provided in each output.</p>
+</section>
+<section id="stratified-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="stratified-analysis">Stratified analysis</h3>
+<p>In addition to the analysis in all subjects together, we can also look at the analysis stratified on another factor. As a first stratified analysis, we will use the variable activity as a dichotomous variable because all subjects in the dataset were classified as either having disease activity (activity=1) or not having disease activity (activity=0). To perform the stratified analysis, we can create two subsets of the original dataset, and then we can use the riskratio and oddsratio commands. For those without activity, we would use these commands:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>MHnoact<span class="ot">&lt;-</span>MHanalysis[MHanalysis<span class="sc">$</span>activity<span class="sc">==</span><span class="dv">0</span>,]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">riskratio</span>(<span class="at">x=</span>MHnoact<span class="sc">$</span>snp,<span class="at">y=</span>MHnoact<span class="sc">$</span>prog)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor   0  1 Total
+    0      80 10    90
+    1      49  9    58
+    Total 129 19   148
+
+$measure
+         risk ratio with 95% C.I.
+Predictor estimate     lower    upper
+        0 1.000000        NA       NA
+        1 1.396552 0.6041795 3.228108
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.4455973    0.4588228  0.4340611
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oddsratio</span>(<span class="at">x=</span>MHnoact<span class="sc">$</span>snp,<span class="at">y=</span>MHnoact<span class="sc">$</span>prog,<span class="at">method=</span><span class="st">"wald"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor   0  1 Total
+    0      80 10    90
+    1      49  9    58
+    Total 129 19   148
+
+$measure
+         odds ratio with 95% C.I.
+Predictor estimate     lower   upper
+        0 1.000000        NA      NA
+        1 1.469388 0.5580296 3.86915
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.4455973    0.4588228  0.4340611
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+</div>
+<p>We can use similar commands for those with activity:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>MHact<span class="ot">&lt;-</span>MHanalysis[MHanalysis<span class="sc">$</span>activity<span class="sc">==</span><span class="dv">1</span>,]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">riskratio</span>(<span class="at">x=</span>MHact<span class="sc">$</span>snp,<span class="at">y=</span>MHact<span class="sc">$</span>prog)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor  0 1 Total
+    0     23 3    26
+    1     13 3    16
+    Total 36 6    42
+
+$measure
+         risk ratio with 95% C.I.
+Predictor estimate     lower    upper
+        0    1.000        NA       NA
+        1    1.625 0.3720797 7.096934
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.5494223    0.6580112  0.5166014
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">oddsratio</span>(<span class="at">x=</span>MHact<span class="sc">$</span>snp,<span class="at">y=</span>MHact<span class="sc">$</span>prog,<span class="at">method=</span><span class="st">"wald"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor  0 1 Total
+    0     23 3    26
+    1     13 3    16
+    Total 36 6    42
+
+$measure
+         odds ratio with 95% C.I.
+Predictor estimate     lower    upper
+        0 1.000000        NA       NA
+        1 1.769231 0.3109032 10.06801
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.5494223    0.6580112  0.5166014
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect
+Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect</code></pre>
+</div>
+</div>
+<p>From these two sets of output, we can see the two estimates of the association in the two strata.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Activity=0</th>
+<th>Activity=1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Risk ratio</td>
+<td>1.4 (0.6, 3.23)</td>
+<td>1.62 (0.37, 7.1)</td>
+</tr>
+<tr class="even">
+<td>Odds ratio</td>
+<td>1.47 (0.56, 3.87)</td>
+<td>1.77 (0.31, 10.07)</td>
+</tr>
+</tbody>
+</table>
+<p>From both sets of output, we can see that the estimates of the associations are similar between the two strata, but we will formally compare them in the next section. Further, we can see that the confidence intervals for those with activity are wider compared to those without activity because the sample size is smaller for those with activity.</p>
+<p>In addition to the previous analysis, we could also perform a stratified analysis based on age. Since age is a continuous variable in this dataset, we will first need to categorize age by generating a new variable called <em>agecategory</em>. We will break age into three categories for this analysis using these categories:</p>
+<ol type="1">
+<li><p>agecategory=1 if age&lt;30</p></li>
+<li><p>agecategory=2 if age&gt;=30 &amp; age&lt;33</p></li>
+<li><p>agecategory=3 if age&gt;=33</p></li>
+</ol>
+<p>The R commands for this are:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>MHanalysis<span class="sc">$</span>agecategory<span class="ot">&lt;-</span><span class="cn">NA</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>MHanalysis<span class="sc">$</span>agecategory[MHanalysis<span class="sc">$</span>age<span class="sc">&lt;</span><span class="dv">30</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(MHanalysis<span class="sc">$</span>age)]<span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>MHanalysis<span class="sc">$</span>agecategory[MHanalysis<span class="sc">$</span>age<span class="sc">&gt;=</span><span class="dv">30</span> <span class="sc">&amp;</span> MHanalysis<span class="sc">$</span>age<span class="sc">&lt;</span><span class="dv">33</span> <span class="sc">&amp;!</span><span class="fu">is.na</span>(MHanalysis<span class="sc">$</span>age)]<span class="ot">&lt;-</span><span class="dv">2</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>MHanalysis<span class="sc">$</span>agecategory[MHanalysis<span class="sc">$</span>age<span class="sc">&gt;=</span><span class="dv">33</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(MHanalysis<span class="sc">$</span>age)]<span class="ot">&lt;-</span><span class="dv">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now, we can complete the stratified analysis in each group using the same types of commands as above. In order to limit the output shown here, we only show the results for the risk ratio for each level of agecategory.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>MHage1<span class="ot">&lt;-</span>MHanalysis[MHanalysis<span class="sc">$</span>agecategory<span class="sc">==</span><span class="dv">1</span>,]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">riskratio</span>(<span class="at">x=</span>MHage1<span class="sc">$</span>snp,<span class="at">y=</span>MHage1<span class="sc">$</span>prog)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor  0 1 Total
+    0     54 3    57
+    1     30 4    34
+    Total 84 7    91
+
+$measure
+         risk ratio with 95% C.I.
+Predictor estimate     lower    upper
+        0 1.000000        NA       NA
+        1 2.235294 0.5320265 9.391524
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1   0.297657    0.4177524  0.2601795
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>MHage2<span class="ot">&lt;-</span>MHanalysis[MHanalysis<span class="sc">$</span>agecategory<span class="sc">==</span><span class="dv">2</span>,]</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">riskratio</span>(<span class="at">x=</span>MHage2<span class="sc">$</span>snp,<span class="at">y=</span>MHage2<span class="sc">$</span>prog)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor  0 1 Total
+    0     20 2    22
+    1     15 4    19
+    Total 35 6    41
+
+$measure
+         risk ratio with 95% C.I.
+Predictor estimate     lower    upper
+        0 1.000000        NA       NA
+        1 2.315789 0.4758049 11.27118
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.3249835     0.389927   0.279876
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>MHage3<span class="ot">&lt;-</span>MHanalysis[MHanalysis<span class="sc">$</span>agecategory<span class="sc">==</span><span class="dv">3</span>,]</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">riskratio</span>(<span class="at">x=</span>MHage3<span class="sc">$</span>snp,<span class="at">y=</span>MHage3<span class="sc">$</span>prog)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$data
+         Outcome
+Predictor  0  1 Total
+    0     29  8    37
+    1     17  4    21
+    Total 46 12    58
+
+$measure
+         risk ratio with 95% C.I.
+Predictor  estimate     lower   upper
+        0 1.0000000        NA      NA
+        1 0.8809524 0.3009229 2.57899
+
+$p.value
+         two-sided
+Predictor midp.exact fisher.exact chi.square
+        0         NA           NA         NA
+        1  0.8386413            1  0.8160911
+
+$correction
+[1] FALSE
+
+attr(,"method")
+[1] "Unconditional MLE &amp; normal approximation (Wald) CI"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect
+Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect
+Warning in chisq.test(xx, correct = correction): Chi-squared approximation may
+be incorrect</code></pre>
+</div>
+</div>
+<p>From these three sets of output, we can see the three estimates of the association in the three strata.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 31%">
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Agecategory=1</th>
+<th>Agecategory=2</th>
+<th>Agecategory=3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Risk ratio</td>
+<td>2.24 (0.53, 9.39)</td>
+<td>2.32 (0.48, 11.27)</td>
+<td>0.88 (0.3, 2.58)</td>
+</tr>
+</tbody>
+</table>
+<p>From the three sets of output, we can see that the estimates of the associations are similar between the three strata, but we will formally compare them in the next section.</p>
+</section>
+<section id="mantel-haenszel-approach" class="level3">
+<h3 class="anchored" data-anchor-id="mantel-haenszel-approach">Mantel-Haenszel approach</h3>
+<p>For our final analysis, we would like to (1) estimate the association between SNP and progression controlling for a third variable and (2) assess if there is a difference in the association between SNP and progression in the levels of the third variable. The first question addresses confounding by the third variable, and the second question addresses effect modification by the third variable. In R, we can address both of these using the same command from the epiR library. You will need to install this library as we have done with other libraries previously.</p>
+<p>install.packages(“epiR”)</p>
+<p>Within this library, we will use the <em>epi.2by2</em> command. This command has a syntax similar to prop.test that we learned in the proportions practicum. This is an alternative way to get the crude analysis. Note that the risk ratio, odds ratio and chi-squared test p-value from this output match those from above.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(epiR)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'epiR' was built under R version 4.5.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: survival</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'survival'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:epitools':
+
+    ratetable</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Package epiR 2.0.91 is loaded</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Type help(epi.about) for summary information</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Type browseVignettes(package = 'epiR') to learn how to use epiR for applied epidemiological analyses</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code></code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(<span class="at">dat=</span><span class="fu">table</span>((<span class="dv">1</span><span class="sc">-</span>MHanalysis<span class="sc">$</span>snp),(<span class="dv">1</span><span class="sc">-</span>MHanalysis<span class="sc">$</span>prog)),<span class="at">method=</span><span class="st">"cohort.count"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Inc risk *
+Exposure+          12          62         74      16.22 (8.67 to 26.61)
+Exposure-          13         103        116      11.21 (6.10 to 18.40)
+Total              25         165        190      13.16 (8.70 to 18.81)
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Inc risk ratio                                 1.45 (0.70, 3.00)
+Inc odds ratio                                 1.53 (0.66, 3.57)
+Attrib risk in the exposed *                   5.01 (-5.16, 15.18)
+Attrib fraction in the exposed (%)            30.89 (-41.76, 66.02)
+Attrib risk in the population *                1.95 (-5.54, 9.44)
+Attrib fraction in the population (%)         14.83 (2.16, 29.84)
+-------------------------------------------------------------------
+Uncorrected chi2 test that OR = 1: chi2(1) = 0.992 Pr&gt;chi2 = 0.319
+Fisher exact test that OR = 1: Pr&gt;chi2 = 0.380
+ Wald confidence limits
+ CI: confidence interval
+ * Outcomes per 100 population units </code></pre>
+</div>
+</div>
+<p>For our final analysis, we would like to (1) estimate the association between SNP and progression controlling for age category and (2) assess if there is a difference in the association between SNP and progression score across the age categories. The first question addresses confounding by age category, and the second question addresses effect modification by age category. In R, we can address both of these using the same command by adding a dimension to the table command.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">epi.2by2</span>(<span class="at">dat=</span><span class="fu">table</span>((<span class="dv">1</span><span class="sc">-</span>MHanalysis<span class="sc">$</span>snp),(<span class="dv">1</span><span class="sc">-</span>MHanalysis<span class="sc">$</span>prog), </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>MHanalysis<span class="sc">$</span>agecategory),<span class="at">method=</span><span class="st">"cohort.count"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             Outcome+    Outcome-      Total                 Inc risk *
+Exposure+          12          62         74      16.22 (8.67 to 26.61)
+Exposure-          13         103        116      11.21 (6.10 to 18.40)
+Total              25         165        190      13.16 (8.70 to 18.81)
+
+
+Point estimates and 95% CIs:
+-------------------------------------------------------------------
+Inc risk ratio (crude)                         1.45 (0.70, 3.00)
+Inc risk ratio (M-H)                           1.46 (0.70, 3.04)
+Inc risk ratio (crude:M-H)                     0.99
+Inc odds ratio (crude)                         1.53 (0.66, 3.57)
+Inc odds ratio (M-H)                           1.56 (0.66, 3.69)
+Inc odds ratio (crude:M-H)                     0.99
+Attrib risk in the exposed (crude) *           5.01 (-5.16, 15.18)
+Attrib risk in the exposed (M-H) *             5.03 (-6.71, 16.78)
+Attrib risk (crude:M-H)                        1.00
+-------------------------------------------------------------------
+ M-H test of homogeneity of IRRs: chi2(2) = 1.510 Pr&gt;chi2 = 0.470
+ M-H test of homogeneity of ORs: chi2(2) = 1.235 Pr&gt;chi2 = 0.539
+ Test that M-H adjusted OR = 1:  chi2(1) = 1.007 Pr&gt;chi2 = 0.316
+ Wald confidence limits
+ M-H: Mantel-Haenszel; CI: confidence interval
+ * Outcomes per 100 population units </code></pre>
+</div>
+</div>
+<p>This output shows the crude RR, which is the estimated RR from the previous analysis that did not account for age category (1.45). Note that this matches the RR from the previous crude analyses. The M-H combined RR is the RR combining over the three groups (1.46). Note that there is only a small difference between the crude and adjusted RR in this case that they appear to be the same, but this does not have to be the case in general. The 95% confidence interval for each of the RRs are also provided. The 95% CI for the adjusted RR includes 1 (0.7, 3.04).</p>
+<p>The final part of the output provides a test for homogeneity, which is asking whether the RR in the age categories are equal. The p-value is large (<span class="math inline">\(p=\)</span> 0.47), showing that there is no evidence that there is a difference in the RR in the three groups.</p>
+<p>Note that the crude OR (1.53), adjusted OR (1.56) and test for homogeneity of the ORs (0.54) are all presented in the output as well.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
